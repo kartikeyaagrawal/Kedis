@@ -1,108 +1,67 @@
-kedis: A Lightweight In-Memory Data Store
+# Kedis: A Python Redis Clone
 
-Introduction:
+Welcome to **Kedis**, a Python-based Redis clone designed to emulate core Redis functionalities. Kedis aims to provide a simple yet powerful key-value store with a focus on ease of use and performance.
 
-kedis is a lightweight in-memory data store inspired by Redis. It offers basic key-value storage with features like string and list data types. Built as a learning project or a simple data store for small-scale applications, kedis provides a foundation for understanding key-value data structures and in-memory storage concepts.
+## 🚀 Features
 
-Features
+- **Key-Value Storage**: Store and retrieve data with various data types.
+- **Persistence**: Options for snapshotting and AOF (Append-Only File) persistence.
+- **Pub/Sub**: Implement publish and subscribe messaging.
+- **Transactions**: Support for multi-command transactions.
+- **Replication**: Basic master-slave replication for high availability.
+- **Lua Scripting**: Execute Lua scripts for server-side logic.
+- **Atomic Operations**: Support for atomic operations on keys.
 
-Key-Value Storage: Stores data associated with unique keys.
-String Data Type: Handles basic strings for various uses.
-List Data Type: Manages ordered collections of elements.
-In-Memory Persistence: Data resides in memory for fast access but is lost upon process termination. (Consider persistent storage for production use.)
-Getting Started
+## 🔧 Installation
 
-Prerequisites
+### Prerequisites
 
-A C compiler (e.g., GCC, Clang)
-Basic understanding of C programming
-Building
+- **Python**: Ensure you have Python 3.6 or higher installed.
+- **Dependencies**: Required Python packages will be managed with `requirements.txt`.
 
-Clone this repository:
+### Install Dependencies
 
-Bash
-git clone https://your-github-repository/kedis.git
-Use code with caution.
-
-Navigate to the project directory:
-
-Bash
+```bash
+git clone https://github.com/yourusername/kedis.git
 cd kedis
-Use code with caution.
+pip install -r requirements.txt
+🏃‍♂️ Usage
+To start the Kedis server, run:
 
-Build the kedis executable:
+bash
+Copy code
+python kedis_server.py
+To interact with the Kedis server, use the Kedis CLI:
 
-Bash
-make
-Use code with caution.
+bash
+Copy code
+python kedis_cli.py
+📜 Commands
+Kedis supports a subset of Redis commands. Here are a few examples:
 
-This will create the kedis executable in the current directory.
+SET key value: Set a key-value pair.
+GET key: Retrieve the value associated with the key.
+DEL key: Delete a key.
+PUBLISH channel message: Publish a message to a channel.
+SUBSCRIBE channel: Subscribe to a channel.
+🛠 Development
+To contribute to Kedis, follow these steps:
 
-Running
+Fork the Repository: Create a personal fork of the Kedis repository on GitHub.
+Clone Your Fork: git clone https://github.com/yourusername/kedis.git
+Create a Branch: git checkout -b feature/your-feature
+Commit Your Changes: git commit -am 'Add new feature'
+Push to Your Fork: git push origin feature/your-feature
+Create a Pull Request: Open a pull request on the main repository.
+🤝 Contributing
+We welcome contributions from the community! If you have suggestions, bug reports, or feature requests, please open an issue on GitHub.
 
-Bash
-./kedis
-Use code with caution.
+📝 License
+Kedis is licensed under the MIT License. See the LICENSE file for details.
 
-This will start the kedis server.
+📞 Contact
+For any questions or feedback, you can reach out to the project maintainer:
 
-Usage
-
-kedis accepts commands on its standard input (stdin). Each command consists of a keyword and optional arguments, separated by spaces.
-
-Supported Commands
-
-SET key value
-
-Sets the value associated with the specified key.
-Example: SET name Alice
-GET key
-
-Retrieves the value associated with the key.
-Example: GET name
-LPUSH key element
-
-Inserts an element at the head of the list identified by the key.
-If the key doesn't exist, it creates a new list.
-Example: LPUSH colors red
-RPUSH key element
-
-Inserts an element at the tail of the list identified by the key.
-If the key doesn't exist, it creates a new list.
-Example: RPUSH colors blue
-LRANGE key start end
-
-Returns a range of elements from the list identified by the key.
-start and end are zero-based indices.
-Example: LRANGE colors 0 1 (returns the first two elements)
-QUIT
-
-Exits the kedis server.
-Example Session
-
-SET name Alice
-GET name
-# Output: Alice
-LPUSH colors red
-RPUSH colors blue
-LRANGE colors 0 1
-# Output: red blue
-QUIT
-Limitations
-
-In-memory persistence: Data is lost when the process terminates.
-Basic features: Limited to strings and lists for this learning implementation.
-Future Considerations
-
-Persistence options: Explore mechanisms for data persistence (e.g., file-based storage).
-Additional data types: Consider implementing more complex data structures (e.g., sets, hashes).
-Advanced features: Expand the functionality with features like TTL (Time-to-Live) for key expiration.
-Contributing
-
-Feel free to submit pull requests with enhancements or bug fixes. This project welcomes contributions for ongoing development.
-
-License
-
-This project is licensed under the MIT License.
-
-Enjoy building and exploring kedis!
+Kartikeya Agrawal
+Email: kartikeyaagrawal000@gmail.com
+LinkedIn: Kartikeya Agrawal
