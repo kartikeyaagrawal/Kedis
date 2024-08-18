@@ -2,8 +2,12 @@ import socket
 import threading
 import asyncio
 import time
+from k_parser import parse_resp
+from argparse import ArgumentParser
+from TTLCache import TTLCache
+from info import RedisReplicationInfo
 # Create a CommandParse object
-
+from constants import SLAVE
 
 class CommandParser:
     def respSimpleString(message):
@@ -18,10 +22,6 @@ class CommandParser:
 pong = "+PONG\r\n"
 store_dictionary = {}
 expiry_dictionary = {}
-
-
-def set_command_assingment(msg):
-    return None
 
 
 async def handle_client(client):
@@ -42,33 +42,49 @@ async def handle_client(client):
             case "set":
                 key = command[4]
                 value = command[6]
-                store_dictionary[key] = value
                 if len(command) > 8:
                     expiry = command[10]
-                    expiry_dictionary[key] = time.time() * 1000 + int(expiry)
+                    cache.add(key=key, value=value, ttl=expiry)
+                else:
+                    cache.add(key=key,value=value)
                 await loop.sock_sendall(
                     client, CommandParser.respSimpleString("OK").encode()
                 )
             case "get":
                 key = command[4]
-                value = store_dictionary.get(key)
-                # Check if the key has expired
-                if key in expiry_dictionary:
-                    if time.time() * 1000 - expiry_dictionary[key] > 0:
-                        value = None
+                value = cache.get(key)
                 await loop.sock_sendall(
                     client, CommandParser.respBulkString(value).encode()
+                )
+            case "info":
+                key = command[4]
+                info_string = info.__str__()
+                await loop.sock_sendall(
+                    client, CommandParser.respBulkString(info_string).encode()
                 )
 
 
 async def async_main():
-    server = socket.create_server(("localhost", 6379), reuse_port=False)
+    parser = ArgumentParser("A Redis server written in Python")
+    parser.add_argument("--port", type=int, default=6379)
+    parser.add_argument("--replicaof", type=str)
+    if  parser.parse_args().replicaof:
+        print(parser.parse_args().replicaof)
+        info.update(role=SLAVE)
+    port = parser.parse_args().port
+    server = socket.create_server(("localhost", port), reuse_port=False)
     server.setblocking(False)
     server.listen()
-    print("Listening on port 6379")
+    print(f"Listening on port {port}")
     loop = asyncio.get_event_loop()
     while True:
         client, _ = await loop.sock_accept(server)
         loop.create_task(handle_client(client))
+
+cache = TTLCache()
+info = RedisReplicationInfo()
+my_master = None
+
+
 if __name__ == "__main__":
     asyncio.run(async_main())
