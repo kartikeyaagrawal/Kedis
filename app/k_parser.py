@@ -20,12 +20,14 @@ def parse_resp(resp_str):
             elif type_indicator == '-':
                 value = lines[index][1:]
                 index += 1
+            else:
+                raise ValueError("Unsupported RESP format inside array")
             result.append(value)
         return result, index
 
     lines = resp_str.strip().split('\r\n')
     type_indicator = lines[0][0]
-    
+
     if type_indicator == '*':
         return parse_array(lines, 0)[0]
     elif type_indicator == '$':
@@ -33,6 +35,8 @@ def parse_resp(resp_str):
     elif type_indicator == ':':
         return int(lines[0][1:])
     elif type_indicator == '-':
+        return lines[0][1:]
+    elif type_indicator == '+':
         return lines[0][1:]
     else:
         raise ValueError("Unsupported RESP format")
@@ -46,6 +50,13 @@ def parse_resp(resp_str):
 # resp_integer = ":1234\r\n"
 # parsed_integer = parse_resp(resp_integer)
 # print(parsed_integer)
+
+
+# For an integer response
+resp_integer = "+PONG\r\n"
+parsed_integer = parse_resp(resp_integer)
+print(parsed_integer)
+
 
 # # For an error response
 # resp_error = "-ERR something went wrong\r\n"

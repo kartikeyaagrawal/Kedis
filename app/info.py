@@ -1,4 +1,15 @@
 class RedisReplicationInfo:
+    
+    ROLE = "role"
+    CONNECTED_SLAVES = "connected_slaves"
+    MASTER_REPLID = "master_replid"
+    MASTER_REPL_OFFSET = "master_repl_offset"
+    SECOND_REPL_OFFSET = "second_repl_offset"
+    REPL_BACKLOG_ACTIVE = "repl_backlog_active"
+    REPL_BACKLOG_SIZE = "repl_backlog_size"
+    REPL_BACKLOG_FIRST_BYTE_OFFSET = "repl_backlog_first_byte_offset"
+    REPL_BACKLOG_HISTLEN = "repl_backlog_histlen"
+
     def __init__(self, role="master", connected_slaves=0, master_replid="8371b4fb1155b71f4a04d3e1bc3e18c4a990aeeb",
                  master_repl_offset=0, second_repl_offset=-1, repl_backlog_active=0,
                  repl_backlog_size=1048576, repl_backlog_first_byte_offset=0,
@@ -24,6 +35,13 @@ class RedisReplicationInfo:
                 f"Replication Backlog First Byte Offset: {self.repl_backlog_first_byte_offset}\n"
                 f"Replication Backlog History Length: {self.repl_backlog_histlen}")
 
+    def get(self, attribute_name):
+        """Return the value of the attribute with the given name."""
+        if hasattr(self, attribute_name):
+            return getattr(self, attribute_name)
+        else:
+            raise AttributeError(f"'RedisReplicationInfo' object has no attribute '{attribute_name}'")
+    
     def update(self, **kwargs):
         for key, value in kwargs.items():
             if hasattr(self, key):

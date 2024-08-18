@@ -42,7 +42,7 @@ def main():
     threads = []
 
     # Creating multiple threads to send concurrent requests
-    for _ in range(1):  # You can adjust the number of concurrent clients
+    for _ in range(100000):  # You can adjust the number of concurrent clients
         thread = threading.Thread(target=send_ping, args=(server_address,))
         threads.append(thread)
         thread.start()
